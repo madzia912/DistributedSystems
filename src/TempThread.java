@@ -36,8 +36,8 @@ public class TempThread extends Thread{
 		while(true)
 		{
 			temp = getTemperature();
-			hm.put(ourKey, temp);
-			System.out.println("Key: " + ourKey + " value: " + temp);
+			hm.put((int) getId(), temp);
+			System.out.println("Key: " + getId() + " value: " + temp);
 			InetAddress addr;
 			try 
 			{
@@ -45,7 +45,7 @@ public class TempThread extends Thread{
 				String msg = addr.getHostAddress();
 				msg += " " + serverPort;
 				byte[] m = msg.getBytes();
-				DatagramPacket messageOut = new DatagramPacket(m, m.length, s.getInetAddress(), s.getPort());
+				DatagramPacket messageOut = new DatagramPacket(m, m.length, InetAddress.getByName("228.5.6.7"), 6789);
 				s.send(messageOut);
 			} 
 			catch (UnknownHostException e) 
@@ -57,7 +57,7 @@ public class TempThread extends Thread{
 				System.out.println("IO: " + e.getMessage());
 			}
 			try {
-				Thread.sleep(20000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

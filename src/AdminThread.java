@@ -33,10 +33,11 @@ public class AdminThread extends Thread{
 		{
 			while(true)
 			{
+				
 				String data = in.readUTF();
 				temp = Double.parseDouble(data);
-				hm.put(ourKey, temp);
-				System.out.println("Key: " + ourKey + " value: " + data);
+				hm.put((int) getId(), temp);
+				System.out.println("Key: " + getId() + " value: " + data);
 				//out.writeUTF(data);
 			}
 		}
@@ -46,19 +47,22 @@ public class AdminThread extends Thread{
 		}
 		catch(IOException e)
 		{
+			
+			hm.remove((int) getId());
+			//System.out.println("We delete the key");
 			System.out.println("IO: " + e.getMessage());
 		}
-		finally
-		{
-			try
-			{
-				clientSocket.close();
-			}
-			catch(IOException e)
-			{
-				/* close failed */
-			}
-			
-		}
+//		finally
+//		{
+//			try
+//			{
+//				clientSocket.close();
+//			}
+//			catch(IOException e)
+//			{
+//				/* close failed */
+//			}
+//			
+//		}
 	}
 }

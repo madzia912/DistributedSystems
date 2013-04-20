@@ -6,11 +6,10 @@ import java.util.HashMap;
 public class ListenToUserThread extends Thread
 {
 	private static HashMap<Integer, Double> tempMap = new HashMap<Integer, Double>();
-	private static Boolean ifAdmin;
-	public ListenToUserThread(Object obj, Boolean obj2)
+	
+	public ListenToUserThread(Object obj)
 	{
 		tempMap = (HashMap<Integer, Double>) obj;
-		ifAdmin = obj2;
 		this.start();
 	}
 	
@@ -20,13 +19,14 @@ public class ListenToUserThread extends Thread
 		while(true){
 			try
 			{
+				
 				serverPort ++;
 				ServerSocket userSocket;
 				userSocket = new ServerSocket(serverPort);
 				
 				Socket uSocket = userSocket.accept();
 				UserThread c = new UserThread(uSocket, tempMap);
-				ifAdmin = true;
+				RegularNode.setAdmin(true);
 			}
 			catch(IOException e)
 			{

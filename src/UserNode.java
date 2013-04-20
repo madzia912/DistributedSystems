@@ -14,53 +14,61 @@ public class UserNode {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		Socket s = null;
-		try
+	public static void main(String[] args) 
+	{	
+		int serverPort = 5679;//to do the list of nodes/ports
+		while(true)
 		{
-			int serverPort = 5679;//to do the list of nodes/ports
-			s = new Socket(args[0], serverPort);
-			DataInputStream in = new DataInputStream(s.getInputStream());
-			DataOutputStream out = new DataOutputStream(s.getOutputStream());
-			Scanner scan = new Scanner(System.in);
-			while(true)
-			{
-				String line = scan.nextLine();
-				switch(line)
-				{
-				case "shiftNode":
-					break;
-				case "getTemp":
-					out.writeUTF("getTemp");
-					String data = in.readUTF();
-					System.out.println("Received: " + data);
-					break;
-				}
-			}
-		}
-		catch(UnknownHostException e)
-		{
-			System.out.println("Sock: " + e.getMessage());
-		}
-		catch(EOFException e)
-		{
-			System.out.println("EOF: " + e.getMessage());
-		}
-		catch(IOException e)
-		{
-			System.out.println("IO: " + e.getMessage());
-		}
-		finally
-		{
-			if(s != null)
+			Socket s = null;
 			try
 			{
-				s.close();
+				
+				s = new Socket(args[0], serverPort);
+				AdminReaderThread reader = new AdminReaderThread(s);
+				DataInputStream in = new DataInputStream(s.getInputStream());
+				DataOutputStream out = new DataOutputStream(s.getOutputStream());
+				while(true)
+				{
+					out.writeUTF("poll");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+				}
+			}
+			catch(UnknownHostException e)
+			{
+				System.out.println("Sock: " + e.getMessage());
+			}
+			catch(EOFException e)
+			{
+				System.out.println("EOF: " + e.getMessage());
 			}
 			catch(IOException e)
-			{
-				System.out.println("close: " + e.getMessage());
+			{	
+				if(serverPort > 5779)
+					serverPort = 5679;
+				else
+					serverPort++;
+
+				System.out.println("IO: " + e.getMessage());
 			}
+//		finally
+//		{
+//			if(s != null)
+//			try
+//			{
+//				s.close();
+//			}
+//			catch(IOException e)
+//			{
+//				System.out.println("close: " + e.getMessage());
+//			}
+//		}
 		}
 	}
 

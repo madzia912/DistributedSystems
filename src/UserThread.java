@@ -47,8 +47,10 @@ public class UserThread extends Thread{
 					double avg = sum / size;
 					out.writeUTF(Double.toString(avg));
 					break;
+				case "poll":
+					
+					break;
 				}
-				//
 			}
 		}
 		catch(EOFException e)
@@ -59,17 +61,17 @@ public class UserThread extends Thread{
 		{
 			System.out.println("IO: " + e.getMessage());
 		}
-		finally
-		{
-			try
-			{
-				clientSocket.close();
-			}
-			catch(IOException e)
-			{
-				/* close failed */
-			}
-			
-		}
+//		finally
+//		{
+//			try
+//			{
+//				clientSocket.close();
+//			}
+//			catch(IOException e)
+//			{
+//				/* close failed */
+//			}
+//			
+//		}
 	}
 }
